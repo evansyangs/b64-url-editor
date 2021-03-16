@@ -27,7 +27,7 @@ const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}
 
 const inputTabList = [{key: 'API', tab: 'API'}, {key: 'TEXT', tab: 'URL'}, {key: 'BASE64', tab: 'BASE64'} ];
 
-const operateTabList = [{key: 'fastEdit', tab: '快速操作'}, {key: 'detailedEdit', tab: '詳細編輯'}];
+const operateTabList = [{key: 'fastEdit', tab: '快速操作'}, {key: 'detailedEdit', tab: '详细编辑'}];
 
 const ssMethod = ['none','table','rc4','rc4-md5','rc4-md5-6','salsa20','chacha20','chacha20-ietf',
 'aes-256-cfb','aes-192-cfb','aes-128-cfb','aes-256-cfb1','aes-192-cfb1','aes-128-cfb1','aes-256-cfb8','aes-192-cfb8','aes-128-cfb8',
@@ -283,12 +283,12 @@ function App() {
         const params = new URLSearchParams(window.location.search);
         params.set('sub',content);
         window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
-        message.loading({ content: '導入訂閱鏈接中', key });
+        message.loading({ content: '导入订阅链接中', key });
         return await getSubscription(content)
         .then(x => {setTextInput(x); return Base64.encode(x);})
         .then(x => {setBase64Input(x); return getServerList(x);})
-        .then(x => {message.success({ content: ['導入',x.length,'個節點','成功'].join(' '), key, duration: 2 });})
-        .catch(err => {console.error(err); message.warning({ content: '導入失敗', key, duration: 2 }); });
+        .then(x => {message.success({ content: ['导入',x.length,'个节点','成功'].join(' '), key, duration: 2 });})
+        .catch(err => {console.error(err); message.warning({ content: '导入失败', key, duration: 2 }); });
       }
     }
   }
@@ -332,7 +332,7 @@ function App() {
           params.set('sub',x);
           window.history.replaceState({}, '', `${window.location.pathname}?${params}`) })
         .then( () => {
-          message.success('訂閱鏈接己生成');
+          message.success('订阅链接己生成');
           setCustomFormLoading(false);
           setSubLinkVisible(true);
           setCustomFormVisble(false); })
@@ -349,7 +349,7 @@ function App() {
   }
 
   const subLinkCreationConfirm = () => {
-    confirm({title: '確定生成訂閱鏈結？',
+    confirm({title: '确定生成订阅链接？',
     icon: <ShareAltOutlined />,
     content: 'This operation will use an API provided by the author, and your data will be confidential. Your links will not be sent by API before confirming . If you have security concern please make your own decision before clicking OK.',
     onOk() {
@@ -367,7 +367,7 @@ function App() {
         confirm({
           title: '有未保存的修改' ,
           icon: <InfoOutlined />,
-          content: '按保存生成訂閱鏈接',
+          content: '按保存生成订阅链接',
           okText: '保存',
           cancelText: '取消',
           okType: 'danger',
@@ -393,14 +393,14 @@ function App() {
         confirm({
           title: '有未保存的修改' ,
           icon: <InfoOutlined />,
-          content: '按保存生成二維碼',
+          content: '按保存生成二维码',
           okText: '保存',
           cancelText: '取消',
           okType: 'danger',
           onOk() {
             setBase64Input( (urlArray.arrToB64(serverList)) );
             setTextInput(serverList.map(x => textTool.json2text[x.type](x.json) ).join('\n') );
-            message.success('二維碼己生成');
+            message.success('二维码己生成');
             setHasEdited(0);
             setQrcodeVisible(true);
 
@@ -435,10 +435,10 @@ function App() {
 
   const deleteOnClick = () => {
     confirm({
-      title: '確定要刪除' + serverList[serverPointer].json.ps + '?' ,
+      title: '确定要删除' + serverList[serverPointer].json.ps + '?' ,
       icon: <ExclamationCircleOutlined />,
-      content: '這項操作無法復原',
-      okText: '確定',
+      content: '这项操作无法复原',
+      okText: '确定',
       cancelText: '取消',
       okType: 'danger',
       onOk() {
@@ -467,7 +467,7 @@ function App() {
       setBase64Input(new_base64);
       setTextInput(Base64.decode(new_base64));
       setServerList(new_urls);
-      message.success('刪除 ' + obj.json.ps + ' 成功');
+      message.success('删除 ' + obj.json.ps + ' 成功');
     } catch (err) {
       console.error(err);
     }
@@ -595,17 +595,17 @@ function App() {
 
   const inputTabContent = {
     API: (<Row gutter={[0,16]} style={{marginBottom: -20}}>
-      <Col span={24}><TextArea rows={4} autosize={false} placeholder={'輸入訂閱網址或服務器鏈接'} onChange={inputOnChange.subscribe} value={subscribeInput}/></Col>
-      <Col span={24} ><Button type="primary" block onClick={importFromClipboard.subscribe}>從剪貼版導入</Button></Col></Row>),
+      <Col span={24}><TextArea rows={4} autosize={false} placeholder={'输入订阅网址或服务器链接'} onChange={inputOnChange.subscribe} value={subscribeInput}/></Col>
+      <Col span={24} ><Button type="primary" block onClick={importFromClipboard.subscribe}>从剪贴板导入</Button></Col></Row>),
     TEXT: (<Row gutter={[0,16]} style={{marginBottom: -20}}>
       <Col span={24}><TextArea rows={4} autosize={false} onChange={inputOnChange.text} value={textInput}/></Col>
-      <Col span={24}><Button type="primary" block onClick={importFromClipboard.text}>從剪貼版導入</Button></Col></Row>),
+      <Col span={24}><Button type="primary" block onClick={importFromClipboard.text}>从剪贴板导入</Button></Col></Row>),
     BASE64: (<Row gutter={[0,16]} style={{marginBottom: -20}}>
       <Col span={24}><TextArea rows={4} autosize={false} onChange={inputOnChange.base64} value={base64Input}/></Col>
-      <Col span={24}><Button type="primary" block onClick={importFromClipboard.base64}>從剪貼版導入</Button></Col></Row>),
+      <Col span={24}><Button type="primary" block onClick={importFromClipboard.base64}>从剪贴板导入</Button></Col></Row>),
     _buttons: (
     <Badge count={hasEdited} offset={[-3,0]} dot>
-      <Button type="primary" disabled={!serverList.length || !base64Input.length} onClick={subLinkModal.btnOnClick}>訂閱鏈接</Button>
+      <Button type="primary" disabled={!serverList.length || !base64Input.length} onClick={subLinkModal.btnOnClick}>订阅链接</Button>
     </Badge>)
   }
 
@@ -620,10 +620,10 @@ function App() {
     </Menu>}><Button type="primary" icon={<PlusOutlined />}/></Dropdown>
     <Button type="primary" disabled={isLoading ||!base64Input.length} icon={<DeleteOutlined />} onClick={deleteOnClick} danger/>
     </div>),
-    remark: (<Input placeholder="節點名稱 (Remark)" addonAfter={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('type')? ( getLogo(serverList[serverPointer].type) ):(<QuestionCircleTwoTone />)}
+    remark: (<Input placeholder="节点名称 (Remark)" addonAfter={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('type')? ( getLogo(serverList[serverPointer].type) ):(<QuestionCircleTwoTone />)}
     value={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('json')? serverList[serverPointer].json.ps:''} disabled={isLoading || !base64Input.length} onChange={editOnChange.ps} onPressEnter={editOnChange.ps}/>),
     serverAddress: (<InputGroup compact>
-    <Input style={{width: "75%", textAlign:"left"}} disabled={isLoading || !base64Input.length} placeholder="服務器地址 (Address)" onChange={editOnChange.address} value={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('json')? serverList[serverPointer].json.add:''} />
+    <Input style={{width: "75%", textAlign:"left"}} disabled={isLoading || !base64Input.length} placeholder="服务器地址 (Address)" onChange={editOnChange.address} value={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('json')? serverList[serverPointer].json.add:''} />
     <Input style={{width: "25%"}} disabled={isLoading || !base64Input.length} placeholder="port" onChange={editOnChange.port} value={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('json')? serverList[serverPointer].json.port:''} />
     </InputGroup>),
     skeleton: ( <Row type="flex" style={{marginBottom: -12}}><Skeleton /></Row> ),
@@ -661,12 +661,12 @@ function App() {
       sm={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('json')? (serverList[serverPointer].json.net === 'kcp'? 24:0):0}
       md={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('json')? (serverList[serverPointer].json.net === 'kcp'? 12:0):0}>
       <Select style={{width:"100%"}} onChange={editOnChange.type} value={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('json')? serverList[serverPointer].json.type:''}>
-        <Option key='none' value='none'>none (不偽裝)</Option>
-        <Option key='wechat-video' value='wechat-video'> wechat-video (偽裝微信視頻) </Option>
-        <Option key='srtp' value='srtp'>srtp (偽裝視頻通話)</Option>
-        <Option key='utp' value='utp'>utp (偽裝BitTorrent下載) </Option>
-        <Option key='dtls' value='dtls'>dlts (偽裝DLTS 1.2封包)</Option>
-        <Option key='wireguard' value='wireguard'>wireguard (偽裝Wireguard封包)</Option>
+        <Option key='none' value='none'>none (不伪装)</Option>
+        <Option key='wechat-video' value='wechat-video'> wechat-video (伪装微信视频) </Option>
+        <Option key='srtp' value='srtp'>srtp (伪装视频通话)</Option>
+        <Option key='utp' value='utp'>utp (伪装BitTorrent下载) </Option>
+        <Option key='dtls' value='dtls'>dlts (伪装DLTS 1.2封包)</Option>
+        <Option key='wireguard' value='wireguard'>wireguard (伪装Wireguard封包)</Option>
       </Select>
     </Col>
     </Row>),
@@ -682,7 +682,7 @@ function App() {
         </Select>
       </Col>
       <Col xs={24} sm={24} md={12}>
-        <Input.Password placeholder="密碼 (Password)" onChange={editOnChange.aid} value={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('json')? serverList[serverPointer].json.aid:''} />
+        <Input.Password placeholder="密码 (Password)" onChange={editOnChange.aid} value={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('json')? serverList[serverPointer].json.aid:''} />
       </Col>
       </Row>
     ),
@@ -691,7 +691,7 @@ function App() {
       <Col xs={24} sm={12} md={12}> {commonContent.remark} </Col>
       <Col xs={24} sm={24} md={12}> {commonContent.serverAddress} </Col>
       <Col xs={24} sm={24} md={12}>
-        <Input.Password placeholder="密碼 (Password)" onChange={editOnChange.aid} value={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('json')? serverList[serverPointer].json.aid:''} />
+        <Input.Password placeholder="密码 (Password)" onChange={editOnChange.aid} value={serverList[serverPointer] && serverList[serverPointer].hasOwnProperty('json')? serverList[serverPointer].json.aid:''} />
       </Col>
       <Col xs={24} sm={24} md={12}>
         <InputGroup compact>
@@ -725,8 +725,8 @@ function App() {
     <div className="App">
       <Layout>
         <Row justify="start" align={"middle"} style={{textAlign: "left"}}>
-          <h2>Shawdowrockets 訂閱鏈接編輯器</h2>
-          <Col xs={0} sm={0} md={8} style={{marginLeft: 8}}><h3>支持 {supportedType.map( (x,index) => index < supportedType.length-1? x+', ':x)} 鏈接編輯</h3></Col>
+          <h2>Shawdowrockets 订阅链接编辑器</h2>
+          <Col xs={0} sm={0} md={8} style={{marginLeft: 8}}><h3>支持 {supportedType.map( (x,index) => index < supportedType.length-1? x+', ':x)} 链接编辑</h3></Col>
         </Row>
         <Content>
         <Row gutter={[16,16]} justify={"space-between"} type="flex">
@@ -738,12 +738,12 @@ function App() {
           </Col>
         </Row>
         </Content>
-        <Modal title="生成二維碼 (Generate QRCode)" visible={qrcodeVisible} onOk={qrcodeModal.close} onCancel={qrcodeModal.close}>
+        <Modal title="生成二维码 (Generate QRCode)" visible={qrcodeVisible} onOk={qrcodeModal.close} onCancel={qrcodeModal.close}>
           <Row justify="center">
           {textTool.text2qrcode(textInput)}
           </Row>
         </Modal>
-        <Modal title="訂閱鏈接 (Generate Subscription link)" visible={subLinkVisible} onOk={() => setSubLinkVisible(false)} onCancel={() => setSubLinkVisible(false)}>
+        <Modal title="订阅链接 (Generate Subscription link)" visible={subLinkVisible} onOk={() => setSubLinkVisible(false)} onCancel={() => setSubLinkVisible(false)}>
           <Row gutter={[16,16]} justify="center">
             <Col span={20}><Input value={customLink}/></Col>
           </Row>
@@ -751,10 +751,10 @@ function App() {
             {textTool.text2qrcode( "sub://" + Base64.encode(customLink) )}
           </Row>
         </Modal>
-        <Modal title="請輸入資料 (用於更新訂閱鏈接)" visible={customFormVisible} onOk={customLinkForm.submit} onCancel={() => setCustomFormVisble(false)} confirmLoading={customFormLoading}>
+        <Modal title="请输入资料 (用于更新订阅链接)" visible={customFormVisible} onOk={customLinkForm.submit} onCancel={() => setCustomFormVisble(false)} confirmLoading={customFormLoading}>
           <Row gutter={[16,16]} justify="center">
-            <Col xs={20} sm={20} md={12}><Input placeholder="使用者名稱 (唯一識別符)" value={customLinkUser} onChange={customLinkForm.userOnChange}/></Col>
-            <Col xs={20} sm={20} md={12}><Input.Password placeholder="密碼 (Password)" value={customLinkPwd} onChange={customLinkForm.pwdOnChange}/></Col>
+            <Col xs={20} sm={20} md={12}><Input placeholder="使用者名称 (唯一识别符)" value={customLinkUser} onChange={customLinkForm.userOnChange}/></Col>
+            <Col xs={20} sm={20} md={12}><Input.Password placeholder="密码 (Password)" value={customLinkPwd} onChange={customLinkForm.pwdOnChange}/></Col>
           </Row>
         </Modal>
         <Footer>
